@@ -52,7 +52,7 @@
     <main>
         <header>
             <div class="logo">Tip<span>Snap</span></div>
-            <button class="theme-toggle" id="themeToggle">🌙 Dark</button>
+            <button class="theme-toggle" id="themeToggle">☀️ Light</button>
         </header>
         <div class="app-container">
             <div class="displays-grid">
@@ -103,7 +103,7 @@
             const currentTheme = htmlDoc.getAttribute('data-theme');
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             htmlDoc.setAttribute('data-theme', newTheme);
-            themeToggle.innerText = newTheme === 'dark' ? '🌙 Dark' : '☀️ Light';
+            themeToggle.innerText = newTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
         });
         const displayBill = document.getElementById('displayBill'); const displayTip = document.getElementById('displayTip');
         const displaySplit = document.getElementById('displaySplit'); const resTip = document.getElementById('resTip'); const resTotal = document.getElementById('resTotal');
