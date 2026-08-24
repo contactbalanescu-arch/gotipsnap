@@ -1,86 +1,73 @@
 <!DOCTYPE html>
-<html lang="ro" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TipSnap | Calculator Bacșiș</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tip Calculator & Split Bill Tool | TipSnap</title>
+    <meta name="description" content="Calculate restaurant tips and split bills instantly with friends. No ads, mobile-friendly, and completely free.">
     <style>
         :root {
-            --bg-main: #0b0f19; --bg-card: #151f32; --text-main: #f8fafc; --text-muted: #64748b;
-            --border-color: #223147; --btn-bg: #1e293b; --btn-active-bg: #334155;
-            --primary: #2563eb; --primary-light: rgba(37, 99, 235, 0.15); --primary-text: #ffffff;
-            --accent: #22c55e; --accent-bg: rgba(34, 197, 94, 0.1);
-            --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3);
-        }
-        [data-theme="light"] {
-            --bg-main: #f1f5f9; --bg-card: #ffffff; --text-main: #0f172a; --text-muted: #64748b;
-            --border-color: #e2e8f0; --btn-bg: #f8fafc; --btn-active-bg: #e2e8f0;
+            --bg-main: #f8fafc; --bg-card: #ffffff; --text-main: #0f172a; --text-muted: #475569;
+            --border-color: #e2e8f0; --btn-bg: #f1f5f9; --btn-active-bg: #e2e8f0;
             --primary: #2563eb; --primary-light: #dbeafe; --primary-text: #ffffff;
-            --accent: #16a34a; --accent-bg: #f0fdf4;
+            --accent: #16a34a; --display-bg: #f8fafc;
             --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; transition: background 0.15s, color 0.15s; }
-        body { background-color: var(--bg-main); color: var(--text-main); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 16px; }
-        main { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 12px; }
-        header { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+        [data-theme="dark"] {
+            --bg-main: #0f172a; --bg-card: #1e293b; --text-main: #f8fafc; --text-muted: #94a3b8;
+            --border-color: #334155; --btn-bg: #334155; --btn-active-bg: #475569;
+            --primary: #3b82f6; --primary-light: #1e3a8a; --primary-text: #ffffff;
+            --accent: #22c55e; --display-bg: #0f172a;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; transition: background 0.2s, color 0.2s; user-select: none; -webkit-user-select: none; }
+        body { background-color: var(--bg-main); color: var(--text-main); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 12px; }
+        header { width: 100%; max-width: 400px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .logo { font-size: 22px; font-weight: 800; } .logo span { color: var(--primary); }
-        
-        .theme-toggle { background: var(--btn-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 6px; }
-        
-        .app-container { width: 100%; background-color: var(--bg-card); border-radius: 24px; border: 1px solid var(--border-color); box-shadow: var(--shadow); padding: 20px; display: flex; flex-direction: column; gap: 16px; }
-        .status-tabs { display: flex; background: var(--btn-bg); padding: 4px; border-radius: 12px; gap: 4px; border: 1px solid var(--border-color); }
-        .tab { flex: 1; text-align: center; padding: 10px; font-size: 13px; font-weight: 700; border-radius: 8px; color: var(--text-muted); cursor: pointer; }
-        .tab.active { background: var(--bg-card); color: var(--primary); border: 1px solid var(--border-color); }
-        
-        .displays-grid { display: flex; flex-direction: column; gap: 12px; padding: 4px 0; }
-        .input-row { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 10px 14px; border-radius: 12px; position: relative; border: 1px solid transparent; }
-        .input-row.highlighted { background: var(--btn-bg); border-color: var(--border-color); }
-        
-        .input-row::before { content: ''; position: absolute; left: 0; top: 20%; bottom: 20%; width: 4px; background: transparent; border-radius: 4px; }
-        .input-row.highlighted::before { background: var(--primary); }
-        
-        .input-label { font-size: 14px; font-weight: 600; color: var(--text-muted); }
+        .theme-toggle { background: var(--btn-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 13px; }
+        .app-container { width: 100%; max-width: 400px; background-color: var(--bg-card); border-radius: 24px; border: 1px solid var(--border-color); box-shadow: var(--shadow); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+        .status-tabs { display: flex; background: var(--btn-bg); padding: 4px; border-radius: 12px; gap: 4px; }
+        .tab { flex: 1; text-align: center; padding: 8px; font-size: 13px; font-weight: 700; border-radius: 8px; color: var(--text-muted); }
+        .tab.active { background: var(--bg-card); color: var(--primary); }
+        .displays-grid { background: var(--display-bg); border-radius: 16px; padding: 14px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 6px; }
+        .input-row { display: flex; justify-content: space-between; align-items: baseline; }
+        .input-label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
         .input-value { font-size: 28px; font-weight: 800; }
-        
-        .results-row { display: flex; gap: 12px; margin-top: 4px; }
-        .res-box { flex: 1; background: var(--accent-bg); padding: 12px; border-radius: 14px; border: 1px solid transparent; text-align: left; }
-        [data-theme="light"] .res-box { border-color: rgba(22, 163, 74, 0.15); }
-        .res-label { font-size: 11px; font-weight: 700; color: var(--accent); opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px; }
-        .res-amount { font-size: 24px; font-weight: 800; color: var(--accent); margin-top: 2px; }
-        
-        .keyboard { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 4px; }
-        .k-btn { background: var(--btn-bg); color: var(--text-main); border: 1px solid var(--border-color); padding: 18px 0; font-size: 20px; font-weight: 700; border-radius: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
-        .k-btn:active { background: var(--btn-active-bg); }
-        .k-btn.action-btn { background: var(--primary-light); color: var(--primary); border-color: transparent; }
-        .k-btn.action-btn.active { background: var(--primary); color: var(--primary-text); }
-        .k-btn.clear-btn { color: #ef4444; }
-        .k-btn.split-btn { background: var(--primary-light); color: var(--primary); grid-row: span 2; height: 100%; font-size: 18px; border-color: transparent; }
-        .k-btn.split-btn.active { background: var(--primary); color: var(--primary-text); }
-        
-        .seo-section { width: 100%; max-width: 400px; margin-top: 4px; padding: 14px; border-radius: 16px; font-size: 12px; line-height: 1.5; color: var(--text-muted); border: 1px solid var(--border-color); text-align: justify; }
-        .seo-section h2 { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: var(--text-main); }
+        .results-row { display: flex; gap: 10px; margin-top: 6px; padding-top: 10px; border-top: 1px dashed var(--border-color); }
+        .res-box { flex: 1; background: var(--bg-card); padding: 10px; border-radius: 12px; border: 1px solid var(--border-color); }
+        .res-label { font-size: 11px; font-weight: 700; color: var(--text-muted); }
+        .res-amount { font-size: 18px; font-weight: 800; color: var(--accent); margin-top: 2px; }
+        .keyboard { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        button.k-btn { background: var(--btn-bg); color: var(--text-main); border: 1px solid var(--border-color); padding: 14px 0; font-size: 18px; font-weight: 700; border-radius: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        button.k-btn:active { background: var(--btn-active-bg); }
+        button.k-btn.action-btn { background: var(--primary-light); color: var(--primary); }
+        button.k-btn.action-btn.active { background: var(--primary); color: var(--primary-text); }
+        button.k-btn.clear-btn { color: #ef4444; }
+        .double-width { grid-column: span 2; }
+        .seo-section, .ad-space { width: 100%; max-width: 400px; margin-top: 16px; padding: 14px; border-radius: 16px; font-size: 12px; line-height: 1.5; }
+        .seo-section { color: var(--text-muted); border: 1px solid var(--border-color); }
+        .ad-space { background: var(--btn-bg); text-align: center; }
     </style>
 </head>
 <body>
     <main>
         <header>
             <div class="logo">Tip<span>Snap</span></div>
-            <button class="theme-toggle" id="themeToggle">🌙 Dark</button>
+            <button class="theme-toggle" id="themeToggle">☀️ Light</button>
         </header>
         <div class="app-container">
             <div class="status-tabs">
-                <div class="tab active" id="tabBill" data-mode="bill">1. Bill Amount</div>
-                <div class="tab" id="tabTip" data-mode="tip">2. Tip %</div>
-                <div class="tab" id="tabSplit" data-mode="split">3. Split</div>
+                <div class="tab active" id="tabBill">1. Bill Amount</div>
+                <div class="tab" id="tabTip">2. Tip %</div>
+                <div class="tab" id="tabSplit">3. Split (People)</div>
             </div>
             <div class="displays-grid">
-                <div class="input-row highlighted" id="rowBill" data-mode="bill">
+                <div class="input-row" id="rowBill" style="border-left: 3px solid var(--primary); padding-left: 8px;">
                     <span class="input-label">Bill Total:</span> <span class="input-value" id="displayBill">$0</span>
                 </div>
-                <div class="input-row" id="rowTip" data-mode="tip">
+                <div class="input-row" id="rowTip" style="padding-left: 8px;">
                     <span class="input-label">Tip Percent:</span> <span class="input-value" id="displayTip">15%</span>
                 </div>
-                <div class="input-row" id="rowSplit" data-mode="split">
+                <div class="input-row" id="rowSplit" style="padding-left: 8px;">
                     <span class="input-label">People:</span> <span class="input-value" id="displaySplit">1</span>
                 </div>
                 <div class="results-row">
@@ -93,23 +80,19 @@
                 <button class="k-btn action-btn" data-val="t15">15%</button>
                 <button class="k-btn action-btn" data-val="t18">18%</button>
                 <button class="k-btn action-btn" data-val="t20">20%</button>
-                
                 <button class="k-btn" data-val="7">7</button>
                 <button class="k-btn" data-val="8">8</button>
                 <button class="k-btn" data-val="9">9</button>
                 <button class="k-btn clear-btn" data-val="C">C</button>
-                
                 <button class="k-btn" data-val="4">4</button>
                 <button class="k-btn" data-val="5">5</button>
                 <button class="k-btn" data-val="6">6</button>
                 <button class="k-btn" data-val="back">⌫</button>
-                
                 <button class="k-btn" data-val="1">1</button>
                 <button class="k-btn" data-val="2">2</button>
                 <button class="k-btn" data-val="3">3</button>
-                <button class="k-btn split-btn" id="btnSplit" data-val="split">Split</button>
-                
-                <button class="k-btn" data-val="0" style="grid-column: span 2;">0</button>
+                <button class="k-btn action-btn double-width" id="btnSplitMode" data-val="split" style="grid-row: span 2; height: 100%;">Split</button>
+                <button class="k-btn double-width" data-val="0">0</button>
                 <button class="k-btn" data-val=".">.</button>
             </div>
         </div>
@@ -118,36 +101,48 @@
             <p>Using TipSnap is simple. Just enter your total bill, choose the percentage, and select the number of people. Our online <strong>split bill</strong> calculator does the rest.</p>
         </section>
     </main>
-
     <script>
-        let currentMode = 'bill'; 
-        let rawBill = ''; 
-        let rawTip = '15'; 
-        let rawSplit = '1';
-
-        const htmlDoc = document.documentElement;
-        const themeToggle = document.getElementById('themeToggle');
-        
-        // Fix deblocare completă Dark/Light mode
-        themeToggle.addEventListener('click', function() {
+        let currentMode = 'bill'; let rawBill = ''; let rawTip = '15'; let rawSplit = '1';
+        const themeToggle = document.getElementById('themeToggle'); const htmlDoc = document.documentElement;
+        themeToggle.addEventListener('click', () => {
             const currentTheme = htmlDoc.getAttribute('data-theme');
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             htmlDoc.setAttribute('data-theme', newTheme);
             themeToggle.innerText = newTheme === 'dark' ? '🌙 Dark' : '☀️ Light';
         });
-
-        const tabs = document.querySelectorAll('.tab');
-        const rows = document.querySelectorAll('.input-row');
-        
-        const displayBill = document.getElementById('displayBill');
-        const displayTip = document.getElementById('displayTip');
-        const displaySplit = document.getElementById('displaySplit');
-        
-        const resTip = document.getElementById('resTip'); 
-        const resTotal = document.getElementById('resTotal');
-        const btnSplit = document.getElementById('btnSplit');
-
-        // Corecție selectare moduri (navigare directă)
+        const displayBill = document.getElementById('displayBill'); const displayTip = document.getElementById('displayTip');
+        const displaySplit = document.getElementById('displaySplit'); const resTip = document.getElementById('resTip'); const resTotal = document.getElementById('resTotal');
+        const tabBill = document.getElementById('tabBill'); const tabTip = document.getElementById('tabTip'); const tabSplit = document.getElementById('tabSplit'); const btnSplitMode = document.getElementById('btnSplitMode');
+        const rowBill = document.getElementById('rowBill'); const rowTip = document.getElementById('rowTip'); const rowSplit = document.getElementById('rowSplit');
+        document.querySelectorAll('.keyboard button').forEach(button => {
+            button.addEventListener('click', () => { handleInput(button.getAttribute('data-val')); });
+        });
         function setMode(mode) {
             currentMode = mode;
-            tabs.forEach(tab => {
+            tabBill.classList.toggle('active', mode === 'bill'); tabTip.classList.toggle('active', mode === 'tip'); tabSplit.classList.toggle('active', mode === 'split'); btnSplitMode.classList.toggle('active', mode === 'split');
+            rowBill.style.borderLeft = mode === 'bill' ? '3px solid var(--primary)' : 'none'; rowTip.style.borderLeft = mode === 'tip' ? '3px solid var(--primary)' : 'none'; rowSplit.style.borderLeft = mode === 'split' ? '3px solid var(--primary)' : 'none';
+        }
+        function handleInput(val) {
+            if (val.startsWith('t')) { rawTip = val.replace('t', ''); setMode('tip'); updateDisplays(); setTimeout(() => setMode('split'), 300); return; }
+            if (val === 'split') { setMode(currentMode === 'split' ? 'bill' : 'split'); return; }
+            if (val === 'C') { rawBill = ''; rawTip = '15'; rawSplit = '1'; setMode('bill'); updateDisplays(); return; }
+            if (val === 'back') {
+                if (currentMode === 'bill') rawBill = rawBill.slice(0, -1);
+                if (currentMode === 'tip') rawTip = rawTip.slice(0, -1);
+                if (currentMode === 'split') rawSplit = rawSplit.slice(0, -1);
+                updateDisplays(); return;
+            }
+            if (currentMode === 'bill') { if (val === '.' && rawBill.includes('.')) return; if (rawBill.replace('.', '').length >= 7) return; rawBill += val; }
+            else if (currentMode === 'tip') { if (val === '.') return; rawTip = rawTip.length >= 2 ? val : rawTip + val; if (parseInt(rawTip) > 100) rawTip = '100'; }
+            else if (currentMode === 'split') { if (val === '.') return; rawSplit = rawSplit === '1' ? val : rawSplit + val; if (parseInt(rawSplit) > 100) rawSplit = '100'; if (rawSplit === '0') rawSplit = '1'; }
+            updateDisplays();
+        }
+        function updateDisplays() {
+            const b = parseFloat(rawBill) || 0; const t = parseFloat(rawTip) || 0; const s = parseInt(rawSplit) || 1;
+            displayBill.innerText = rawBill ? '$' + rawBill : '$0'; displayTip.innerText = t + '%'; displaySplit.innerText = s;
+            const totalTip = b * (t / 100); const totalBill = b + totalTip;
+            resTip.innerText = '$' + (totalTip / s).toFixed(2); resTotal.innerText = '$' + (totalBill / s).toFixed(2);
+        }
+    </script>
+</body>
+</html>
