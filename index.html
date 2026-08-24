@@ -5,326 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tip Calculator & Split Bill Tool | TipSnap</title>
     <meta name="description" content="Calculate restaurant tips and split bills instantly with friends. No ads, mobile-friendly, and completely free.">
-    
-    <!-- Open Graph (Facebook / Twitter) -->
-    <meta property="og:title" content="Tip Calculator & Split Bill Tool | TipSnap">
-    <meta property="og:description" content="Calculate restaurant tips and split bills instantly with friends. No ads, mobile-friendly, and completely free.">
-    <meta property="og:url" content="https://gotipsnap.com">
-    <meta property="og:type" content="website">
-
     <style>
-        :root {
-            --bg-main: #f8fafc;
-            --bg-card: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #475569;
-            --border-color: #e2e8f0;
-            --btn-bg: #f1f5f9;
-            --btn-active-bg: #e2e8f0;
-            --primary: #2563eb;
-            --primary-light: #eff6ff;
-            --primary-border: #bfdbfe;
-            --primary-text: #ffffff;
-            --accent: #16a34a;
-            --display-bg: #f8fafc;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-        }
-
-        [data-theme="dark"] {
-            --bg-main: #0f172a;
-            --bg-card: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
-            --btn-bg: #334155;
-            --btn-active-bg: #475569;
-            --primary: #3b82f6;
-            --primary-light: #1e3a8a;
-            --primary-border: #2563eb;
-            --primary-text: #ffffff;
-            --accent: #22c55e;
-            --display-bg: #0f172a;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            transition: background-color 0.15s, color 0.15s, border-color 0.15s;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 12px;
-        }
-
-        header {
-            width: 100%;
-            max-width: 400px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            padding: 4px;
-        }
-
-        .logo {
-            font-size: 22px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-        .logo span { color: var(--primary); }
-
-        .theme-toggle {
-            background: var(--btn-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 8px 14px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 400px;
-            background-color: var(--bg-card);
-            border-radius: 24px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        /* Mode Status Tabs */
-        .status-tabs {
-            display: flex;
-            background: var(--btn-bg);
-            padding: 4px;
-            border-radius: 12px;
-            gap: 4px;
-        }
-
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            border-radius: 8px;
-            color: var(--text-muted);
-            cursor: pointer;
-        }
-
-        .tab.active {
-            background: var(--bg-card);
-            color: var(--primary);
-            box-shadow: var(--shadow);
-        }
-
-        /* Displays Grid with Dynamic Highlighting */
-        .displays-grid {
-            background: var(--display-bg);
-            border-radius: 16px;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .input-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 14px;
-            border-radius: 14px;
-            border: 2px solid transparent;
-            cursor: pointer;
-        }
-
-        .input-row.highlighted {
-            background-color: var(--primary-light);
-            border-color: var(--primary-border);
-        }
-
-        .input-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
-        .input-row.highlighted .input-label {
-            color: var(--primary);
-        }
-
-        .input-value {
-            font-size: 26px;
-            font-weight: 800;
-            color: var(--text-main);
-        }
-
-        .results-row {
-            display: flex;
-            gap: 10px;
-            margin-top: 6px;
-            padding-top: 12px;
-            border-top: 1px dashed var(--border-color);
-        }
-
-        .res-box {
-            flex: 1;
-            background: var(--bg-card);
-            padding: 10px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-        }
-
-        .res-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .res-amount {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--accent);
-            margin-top: 2px;
-        }
-
-        /* Keyboard Styles */
-        .keyboard {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-        }
-
-        button.k-btn {
-            background: var(--btn-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 14px 0;
-            font-size: 18px;
-            font-weight: 700;
-            border-radius: 14px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        button.k-btn:active {
-            background: var(--btn-active-bg);
-        }
-
-        button.k-btn.action-btn {
-            background: var(--primary-light);
-            color: var(--primary);
-            border-color: transparent;
-        }
-
-        button.k-btn.action-btn.active {
-            background: var(--primary);
-            color: var(--primary-text);
-        }
-
-        button.k-btn.clear-btn {
-            color: #ef4444;
-        }
-
-        .double-width {
-            grid-column: span 2;
-        }
-
-        /* SEO & Footer */
-        .seo-section, .ad-space {
-            width: 100%;
-            max-width: 400px;
-            margin-top: 16px;
-            padding: 14px;
-            border-radius: 16px;
-            font-size: 12px;
-            line-height: 1.5;
-        }
-
-        .seo-section {
-            color: var(--text-muted);
-            border: 1px solid var(--border-color);
-        }
-
-        .seo-section h2, .seo-section h3 {
-            font-size: 14px;
-            color: var(--text-main);
-            margin-bottom: 4px;
-            margin-top: 8px;
-        }
+        :root { --bg-main: #f8fafc; --bg-card: #ffffff; --text-main: #0f172a; --text-muted: #475569; --border-color: #e2e8f0; --btn-bg: #f1f5f9; --btn-active-bg: #e2e8f0; --primary: #2563eb; --primary-light: #eff6ff; --primary-border: #bfdbfe; --primary-text: #ffffff; --accent: #16a34a; --display-bg: #f8fafc; --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); }
+        [data-theme="dark"] { --bg-main: #0f172a; --bg-card: #1e293b; --text-main: #f8fafc; --text-muted: #94a3b8; --border-color: #334155; --btn-bg: #334155; --btn-active-bg: #475569; --primary: #3b82f6; --primary-light: #1e3a8a; --primary-border: #2563eb; --primary-text: #ffffff; --accent: #22c55e; --display-bg: #0f172a; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; transition: background 0.15s, color 0.15s; user-select: none; -webkit-user-select: none; }
+        body { background-color: var(--bg-main); color: var(--text-main); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 12px; }
+        header { width: 100%; max-width: 400px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .logo { font-size: 22px; font-weight: 800; } .logo span { color: var(--primary); }
+        .theme-toggle { background: var(--btn-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 13px; }
+        .app-container { width: 100%; max-width: 400px; background-color: var(--bg-card); border-radius: 24px; border: 1px solid var(--border-color); box-shadow: var(--shadow); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+        .status-tabs { display: flex; background: var(--btn-bg); padding: 4px; border-radius: 12px; gap: 4px; }
+        .tab { flex: 1; text-align: center; padding: 8px; font-size: 13px; font-weight: 700; border-radius: 8px; color: var(--text-muted); cursor: pointer; }
+        .tab.active { background: var(--bg-card); color: var(--primary); box-shadow: var(--shadow); }
+        .displays-grid { background: var(--display-bg); border-radius: 16px; padding: 12px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 6px; }
+        .input-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-radius: 14px; border: 2px solid transparent; cursor: pointer; }
+        .input-row.highlighted { background-color: var(--primary-light); border-color: var(--primary-border); }
+        .input-label { font-size: 14px; font-weight: 600; color: var(--text-muted); }
+        .input-row.highlighted .input-label { color: var(--primary); }
+        .input-value { font-size: 26px; font-weight: 800; }
+        .results-row { display: flex; gap: 10px; margin-top: 6px; padding-top: 12px; border-top: 1px dashed var(--border-color); }
+        .res-box { flex: 1; background: var(--bg-card); padding: 10px; border-radius: 12px; border: 1px solid var(--border-color); }
+        .res-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+        .res-amount { font-size: 20px; font-weight: 800; color: var(--accent); margin-top: 2px; }
+        .keyboard { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        button.k-btn { background: var(--btn-bg); color: var(--text-main); border: 1px solid var(--border-color); padding: 14px 0; font-size: 18px; font-weight: 700; border-radius: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        button.k-btn:active { background: var(--btn-active-bg); }
+        button.k-btn.action-btn { background: var(--primary-light); color: var(--primary); border-color: transparent; }
+        button.k-btn.action-btn.active { background: var(--primary); color: var(--primary-text); }
+        button.k-btn.clear-btn { color: #ef4444; }
+        .double-width { grid-column: span 2; }
+        .seo-section, .ad-space { width: 100%; max-width: 400px; margin-top: 16px; padding: 14px; border-radius: 16px; font-size: 12px; line-height: 1.5; }
+        .seo-section { color: var(--text-muted); border: 1px solid var(--border-color); }
+        .seo-section h2, .seo-section h3 { font-size: 14px; color: var(--text-main); margin-bottom: 4px; margin-top: 8px; }
         .seo-section h2:first-of-type { margin-top: 0; }
-
-        .ad-space {
-            background: var(--btn-bg);
-            border: 2px dashed var(--border-color);
-            text-align: center;
-            color: var(--text-main);
-        }
-
-        .affiliate-link {
-            display: inline-block;
-            margin-top: 6px;
-            color: var(--primary);
-            font-weight: 700;
-            text-decoration: underline;
-            cursor: pointer;
-        }
+        .ad-space { background: var(--btn-bg); border: 2px dashed var(--border-color); text-align: center; }
+        .affiliate-link { display: inline-block; margin-top: 6px; color: var(--primary); font-weight: 700; text-decoration: underline; cursor: pointer; }
     </style>
 </head>
 <body>
-
     <main>
         <header>
             <div class="logo">Tip<span>Snap</span></div>
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
-                <span id="themeIcon">☀️</span> <span id="themeText">Light</span>
-            </button>
+            <button class="theme-toggle" id="themeToggle"><span id="themeIcon">☀️</span> <span id="themeText">Light</span></button>
         </header>
-
         <div class="app-container">
-            <!-- Mode Status Tabs -->
             <div class="status-tabs">
                 <div class="tab active" id="tabBill" onclick="setMode('bill')">1. Bill Amount</div>
                 <div class="tab" id="tabTip" onclick="setMode('tip')">2. Tip %</div>
                 <div class="tab" id="tabSplit" onclick="setMode('split')">3. Split (People)</div>
             </div>
-
-            <!-- Display Area with Selection Click -->
             <div class="displays-grid">
-                <div class="input-row highlighted" id="rowBill" onclick="setMode('bill')">
-                    <span class="input-label">Bill Total:</span>
-                    <span class="input-value" id="displayBill">$0</span>
+                <div class="input-row highlighted" id="rowBill" onclick="setMode('bill')"><span class="input-label">Bill Total:</span><span class="input-value" id="displayBill">$0</span></div>
+                <div class="input-row" id="rowTip" onclick="setMode('tip')"><span class="input-label">Tip Percent:</span><span class="input-value" id="displayTip">15%</span></div>
+                <div class="input-row" id="rowSplit" onclick="setMode('split')"><span class="input-label">People:</span><span class="input-value" id="displaySplit">1</span></div>
+                <div class="results-row">
+                    <div class="res-box"><div class="res-label">Tip / Person</div><div class="res-amount" id="resTip">$0.00</div></div>
+                    <div class="res-box"><div class="res-label">Total / Person</div><div class="res-amount" id="resTotal">$0.00</div></div>
                 </div>
-                <div class="input-row" id="rowTip" onclick="setMode('tip')">
-                    <span class="input-label">Tip Percent:</span>
-                    <span class="input-value" id="displayTip">15%</span>
-                </div>
-                <div class="input-row" id="rowSplit" onclick="setMode('split')">
-                    <span class="input-label">People:</span>
-                    <span class="input-value" id="displaySplit">1</span>
-                </div>
-
-                <!-- Live Results -->
+            </div>
+            <div class="keyboard">
+                <button class="k-btn action-btn" data-val="t10">10%</button><button class="k-btn action-btn" data-val="t15">15%</button><button class="k-btn action-btn" data-val="t18">18%</button><button class="k-btn action-btn" data-val="t20">20%</button>
+                <button class="k-btn" data-val="7">7</button><button class="k-btn" data-val="8">8</button><button class="k-btn" data-val="9">9</button><button class="k-btn clear-btn" data-val="C">C</button>
+                <button class="k-btn" data-val="4">4</button><button class="k-btn" data-val="5">5</button><button class="k-btn" data-val="6">6</button><button class="k-btn" data-val="back">⌫</button>
+                <button class="k-btn" data-val="1">1</button><button class="k-btn" data-val="2">2</button><button class="k-btn" data-val="3">3</button><button class="k-btn action-btn double-width" id="btnSplitMode" data-val="split" style="grid-row: span 2; height: 100%;">Split</button>
+                <button class="k-btn double-width" data-val="0">0</button><button class="k-btn" data-val=".">.</button>
+            </div>
+        </div>
+        <section class="seo-section">
+            <h2>Why Use Our Free Tip Calculator?</h2>
+            <p>Using TipSnap is simple. Just enter your total restaurant or bar bill amount, choose the percentage you wish to leave, and select the number of people sharing the expense. Our online <strong>split bill</strong> calculator will instantly find the exact gratuity amount and the grand total per person.</p>
+            <h3>How do you split a bill evenly with a tip?</h3>
+            <p>To split a bill evenly, take the total amount (including tax and tip) and divide it by the number of people in your party. This clean <strong>tip calc</strong> automates this process so everyone knows exactly how much to pay.</p>
+        </section>
+        <div class="ad-space">Looking for more tools? <span class="affiliate-link">Check out our recommended finance apps</span></div>
+    </main>
+    <script>
+        let currentMode = 'bill'; let rawBill = ''; let rawTip = '15'; let rawSplit = '1'; let customTipStarted = false;
+        const themeToggle = document.getElementById('themeToggle'); const htmlDoc = document.documentElement;
+        const themeIcon = document.getElementById('themeIcon'); const themeText = document.getElementById('themeText');
+        const savedTheme = localStorage.getItem('theme') || 'light'; htmlDoc.setAttribute('data-theme', savedTheme); updateThemeUI(savedTheme);
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlDoc.getAttribute('data-theme'); const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            htmlDoc.setAttribute('data-theme', newTheme); localStorage.setItem('theme', newTheme); updateThemeUI(newTheme);
+        });
+        function updateThemeUI(theme) {
+            if (theme === 'dark') { themeIcon.innerText = '🌙'; themeText.innerText = 'Dark'; }
+            else { themeIcon.innerText = '☀️'; themeText.innerText = 'Light'; }
+        }
+        const displayBill = document.getElementById('displayBill'); const displayTip = document.getElementById('displayTip');
