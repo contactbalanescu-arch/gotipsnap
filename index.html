@@ -64,11 +64,28 @@
                 </div>
             </div>
             <div class="keyboard">
-                <button class="k-btn action-btn" data-val="t10">10%</button><button class="k-btn action-btn" data-val="t15">15%</button><button class="k-btn action-btn" data-val="t18">18%</button><button class="k-btn action-btn" data-val="t20">20%</button>
-                <button class="k-btn" data-val="7">7</button><button class="k-btn" data-val="8">8</button><button class="k-btn" data-val="9">9</button><button class="k-btn clear-btn" data-val="C">C</button>
-                <button class="k-btn" data-val="4">4</button><button class="k-btn" data-val="5">5</button><button class="k-btn" data-val="6">6</button><button class="k-btn" data-val="back">⌫</button>
-                <button class="k-btn" data-val="1">1</button><button class="k-btn" data-val="2">2</button><button class="k-btn" data-val="3">3</button><button class="k-btn" data-val=".">.</button>
-                <button class="k-btn double-width" data-val="0">0</button><button class="k-btn double-width" data-val="back">⌫</button>
+                <button class="k-btn action-btn" data-val="t10">10%</button>
+                <button class="k-btn action-btn" data-val="t15">15%</button>
+                <button class="k-btn action-btn" data-val="t18">18%</button>
+                <button class="k-btn action-btn" data-val="t20">20%</button>
+                
+                <button class="k-btn" data-val="7">7</button>
+                <button class="k-btn" data-val="8">8</button>
+                <button class="k-btn" data-val="9">9</button>
+                <button class="k-btn clear-btn" data-val="C">C</button>
+                
+                <button class="k-btn" data-val="4">4</button>
+                <button class="k-btn" data-val="5">5</button>
+                <button class="k-btn" data-val="6">6</button>
+                <button class="k-btn" data-val="back">⌫</button>
+                
+                <button class="k-btn" data-val="1">1</button>
+                <button class="k-btn" data-val="2">2</button>
+                <button class="k-btn" data-val="3">3</button>
+                <button class="k-btn" data-val=".">.</button>
+                
+                <button class="k-btn double-width" data-val="0">0</button>
+                <button class="k-btn double-width" data-val="back">⌫</button>
             </div>
         </div>
         <section class="seo-section">
@@ -80,17 +97,23 @@
         <div class="ad-space">Looking for more tools? <span class="affiliate-link">Check out our recommended finance apps</span></div>
     </main>
     <script>
-        let currentMode = 'bill'; let rawBill = ''; let rawTip = '15'; let rawSplit = '1'; let customTipStarted = false;
-        const themeToggle = document.getElementById('themeToggle'); const htmlDoc = document.documentElement;
-        const themeIcon = document.getElementById('themeIcon'); const themeText = document.getElementById('themeText');
-        const savedTheme = localStorage.getItem('theme') || 'light'; htmlDoc.setAttribute('data-theme', savedTheme); updateThemeUI(savedTheme);
+        let currentMode = 'bill', rawBill = '', rawTip = '15', rawSplit = '1', customTipStarted = false;
+        const themeToggle = document.getElementById('themeToggle'), htmlDoc = document.documentElement;
+        const themeIcon = document.getElementById('themeIcon'), themeText = document.getElementById('themeText');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        htmlDoc.setAttribute('data-theme', savedTheme);
+        updateThemeUI(savedTheme);
+
         themeToggle.addEventListener('click', () => {
-            const currentTheme = htmlDoc.getAttribute('data-theme'); const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            htmlDoc.setAttribute('data-theme', newTheme); localStorage.setItem('theme', newTheme); updateThemeUI(newTheme);
+            const currentTheme = htmlDoc.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            htmlDoc.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeUI(newTheme);
         });
+
         function updateThemeUI(theme) {
-            if (theme === 'dark') { themeIcon.innerText = '🌙'; themeText.innerText = 'Dark'; }
-            else { themeIcon.innerText = '☀️'; themeText.innerText = 'Light'; }
+            themeIcon.innerText = theme === 'dark' ? '🌙' : '☀️';
+            themeText.innerText = theme === 'dark' ? 'Dark' : 'Light';
         }
-        const displayBill = document.getElementById('displayBill'); const displayTip = document.getElementById('displayTip');
-        const displaySplit = document.getElementById('displaySplit'); const resTip = document.getElementById('resTip'); const resTotal = document.getElementById('resTotal');
+
