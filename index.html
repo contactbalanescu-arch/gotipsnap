@@ -26,10 +26,10 @@
         .theme-toggle { background: var(--btn-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 13px; }
         .app-container { width: 100%; max-width: 400px; background-color: var(--bg-card); border-radius: 24px; border: 1px solid var(--border-color); box-shadow: var(--shadow); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
         .status-tabs { display: flex; background: var(--btn-bg); padding: 4px; border-radius: 12px; gap: 4px; }
-        .tab { flex: 1; text-align: center; padding: 8px; font-size: 13px; font-weight: 700; border-radius: 8px; color: var(--text-muted); }
+        .tab { flex: 1; text-align: center; padding: 8px; font-size: 13px; font-weight: 700; border-radius: 8px; color: var(--text-muted); cursor: pointer; }
         .tab.active { background: var(--bg-card); color: var(--primary); }
         .displays-grid { background: var(--display-bg); border-radius: 16px; padding: 14px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 6px; }
-        .input-row { display: flex; justify-content: space-between; align-items: baseline; }
+        .input-row { display: flex; justify-content: space-between; align-items: baseline; cursor: pointer; padding: 4px 8px; border-radius: 8px; }
         .input-label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
         .input-value { font-size: 28px; font-weight: 800; }
         .results-row { display: flex; gap: 10px; margin-top: 6px; padding-top: 10px; border-top: 1px dashed var(--border-color); }
@@ -104,45 +104,43 @@
     <script>
         let currentMode = 'bill'; let rawBill = ''; let rawTip = '15'; let rawSplit = '1';
         const themeToggle = document.getElementById('themeToggle'); const htmlDoc = document.documentElement;
+        
+        // Dark/Light Mode Toggle
         themeToggle.addEventListener('click', () => {
             const currentTheme = htmlDoc.getAttribute('data-theme');
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             htmlDoc.setAttribute('data-theme', newTheme);
             themeToggle.innerText = newTheme === 'dark' ? '🌙 Dark' : '☀️ Light';
         });
-        const displayBill = document.getElementById('displayBill'); const displayTip = document.getElementById('displayTip');
-        const displaySplit = document.getElementById('displaySplit'); const resTip = document.getElementById('resTip'); const resTotal = document.getElementById('resTotal');
-        const tabBill = document.getElementById('tabBill'); const tabTip = document.getElementById('tabTip'); const tabSplit = document.getElementById('tabSplit'); const btnSplitMode = document.getElementById('btnSplitMode');
-        const rowBill = document.getElementById('rowBill'); const rowTip = document.getElementById('rowTip'); const rowSplit = document.getElementById('rowSplit');
-        document.querySelectorAll('.keyboard button').forEach(button => {
-            button.addEventListener('click', () => { handleInput(button.getAttribute('data-val')); });
-        });
+
+        // UI Selectors
+        const tabs = { bill: document.getElementById('tabBill'), tip: document.getElementById('tabTip'), split: document.getElementById('tabSplit') };
+        const rows = { bill: document.getElementById('rowBill'), tip: document.getElementById('rowTip'), split: document.getElementById('rowSplit') };
+        const displays = { bill: document.getElementById('displayBill'), tip: document.getElementById('displayTip'), split: document.getElementById('displaySplit') };
+        const resTip = document.getElementById('resTip'); const resTotal = document.getElementById('resTotal');
+
+        // Change Input Mode
         function setMode(mode) {
             currentMode = mode;
-            tabBill.classList.toggle('active', mode === 'bill'); tabTip.classList.toggle('active', mode === 'tip'); tabSplit.classList.toggle('active', mode === 'split'); btnSplitMode.classList.toggle('active', mode === 'split');
-            rowBill.style.borderLeft = mode === 'bill' ? '3px solid var(--primary)' : 'none'; rowTip.style.borderLeft = mode === 'tip' ? '3px solid var(--primary)' : 'none'; rowSplit.style.borderLeft = mode === 'split' ? '3px solid var(--primary)' : 'none';
+            Object.keys(tabs).forEach(k => {
+                tabs[k].classList.toggle('active', k === mode);
+                rows[k].style.borderLeft = k === mode ? '3px solid var(--primary)' : 'none';
+            });
         }
-        function handleInput(val) {
-            if (val.startsWith('t')) { rawTip = val.replace('t', ''); setMode('tip'); updateDisplays(); setTimeout(() => setMode('split'), 300); return; }
-            if (val === 'split') { setMode(currentMode === 'split' ? 'bill' : 'split'); return; }
-            if (val === 'C') { rawBill = ''; rawTip = '15'; rawSplit = '1'; setMode('bill'); updateDisplays(); return; }
-            if (val === 'back') {
-                if (currentMode === 'bill') rawBill = rawBill.slice(0, -1);
-                if (currentMode === 'tip') rawTip = rawTip.slice(0, -1);
-                if (currentMode === 'split') rawSplit = rawSplit.slice(0, -1);
-                updateDisplays(); return;
-            }
-            if (currentMode === 'bill') { if (val === '.' && rawBill.includes('.')) return; if (rawBill.replace('.', '').length >= 7) return; rawBill += val; }
-            else if (currentMode === 'tip') { if (val === '.') return; rawTip = rawTip.length >= 2 ? val : rawTip + val; if (parseInt(rawTip) > 100) rawTip = '100'; }
-            else if (currentMode === 'split') { if (val === '.') return; rawSplit = rawSplit === '1' ? val : rawSplit + val; if (parseInt(rawSplit) > 100) rawSplit = '100'; if (rawSplit === '0') rawSplit = '1'; }
-            updateDisplays();
-        }
-        function updateDisplays() {
-            const b = parseFloat(rawBill) || 0; const t = parseFloat(rawTip) || 0; const s = parseInt(rawSplit) || 1;
-            displayBill.innerText = rawBill ? '$' + rawBill : '$0'; displayTip.innerText = t + '%'; displaySplit.innerText = s;
-            const totalTip = b * (t / 100); const totalBill = b + totalTip;
-            resTip.innerText = '$' + (totalTip / s).toFixed(2); resTotal.innerText = '$' + (totalBill / s).toFixed(2);
-        }
-    </script>
-</body>
-</html>
+
+        // Tap directly on rows or tabs to switch mode
+        Object.keys(tabs).forEach(k => {
+            tabs[k].addEventListener('click', () => setMode(k));
+            rows[k].addEventListener('click', () => setMode(k));
+        });
+
+        // Main Calculation Logic
+        function calculate() {
+            const bill = parseFloat(rawBill) || 0;
+            const tipPercent = parseFloat(rawTip) || 0;
+            const people = Math.max(1, parseInt(rawSplit) || 1);
+
+            const totalTip = bill * (tipPercent / 100);
+            const totalBill = bill + totalTip;
+
+            resTip.innerText = `$${(totalTip / people).toFixed(2)}`;
